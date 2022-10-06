@@ -12,11 +12,11 @@ const chooseBusinessScene = new BaseScene(CHOOSE_BUSINESS);
 
 chooseBusinessScene.enter(async (ctx) => {
   const businesses = await prisma.business.findMany();
-    const sortedBusinesses = businesses.sort((a, b) => a.name.localeCompare(b.name));
-    const buttonsArray = sortedBusinesses.map(({ placeId }) => chooseOptions[placeId - 1]);
-    buttonsArray.push(buy);
+  const sortedBusinesses = businesses.sort((a, b) => a.id - b.id);
+  const buttonsArray = sortedBusinesses.map(({ placeId }) => chooseOptions[placeId - 1]);
+  buttonsArray.push(buy);
 
-    await ctx.sendMessage(choose, Markup.keyboard(groupArrayToKeyboard(buttonsArray, 3)).resize());
+  await ctx.sendMessage(choose, Markup.keyboard(groupArrayToKeyboard(buttonsArray, 3)).resize());
 });
 
 chooseBusinessScene.on('text', async (ctx) => {

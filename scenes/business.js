@@ -24,9 +24,10 @@ businessScene.enter(async (ctx) => {
   }
 
   const { steps = [], description = '' } = business;
+  const prepareButtons = steps.sort((a, b) => a?.id - b?.id).map(({ button }) => button);
 
-  await ctx.sendMessage(description, steps.length !== 0 && (
-    Markup.keyboard(groupArrayToKeyboard([...steps.map(({ button }) => button), back], 2)).resize()
+  await ctx.replyWithHTML(description, steps.length !== 0 && (
+    Markup.keyboard(groupArrayToKeyboard([...prepareButtons, back], 2)).resize()
   ));
 
   if (steps.length === 0) {

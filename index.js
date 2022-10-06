@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-const { Telegraf, Scenes: { Stage } } = require('telegraf');
+const { Telegraf, Scenes: { Stage }, Markup } = require('telegraf');
 const RedisSession = require('telegraf-session-redis');
+const { CHOOSE_BUSINESS } = require('./scenes/scenes');
 
 // Scenes
-const { GREETING } = require('./scenes/scenes');
-const greetingScene = require('./scenes/greeting');
 const chooseBusinessScene = require('./scenes/chooseBusiness');
 const businessScene = require('./scenes/business')
+const { greeting, workTogether, help } = require('./messages.json');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -19,14 +19,25 @@ const session = new RedisSession({
 });
 
 const stage = new Stage([
-  greetingScene,
   chooseBusinessScene,
   businessScene
 ]);
 
 bot.use(session);
 bot.use(stage.middleware());
-bot.start((ctx) => ctx.scene.enter(GREETING));
+
+bot.start((ctx) => {
+  return ctx.replyWithMarkdownV2(
+    greeting,
+    Markup.inlineKeyboard([
+      [workTogether],
+    ]).oneTime().resize()
+  );
+});
+
+bot.help((ctx) => ctx.sendMessage(help));
+
+bot.hears(workTogether, (ctx) => ctx.scene.enter(CHOOSE_BUSINESS));
 
 bot.launch();
 

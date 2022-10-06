@@ -29,7 +29,7 @@ bot.use(stage.middleware());
 bot.start((ctx) => {
   return ctx.replyWithMarkdownV2(
     greeting,
-    Markup.inlineKeyboard([
+    Markup.keyboard([
       [workTogether],
     ]).oneTime().resize()
   );

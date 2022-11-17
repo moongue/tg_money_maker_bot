@@ -6,7 +6,10 @@ const groupArrayToKeyboard = (array, groupSize) => {
   return keyboard;
 }
 
+const parseReceivedData = (data) => data.replace(/\\n/g, '\n');
+
 module.exports = {
-  groupArrayToKeyboard
+  groupArrayToKeyboard,
+  parseReceivedData
 }
 

@@ -1,7 +1,7 @@
 const { Scenes: { BaseScene }, Markup } = require('telegraf');
 const { PrismaClient } = require('@prisma/client');
 const { BUSINESS, CHOOSE_BUSINESS } = require('./scenes');
-const { groupArrayToKeyboard } = require('../utils');
+const { groupArrayToKeyboard, parseReceivedData } = require('../utils');
 const { businessNotAvailable, back } = require('../messages.json');
 
 const prisma = new PrismaClient();
@@ -26,7 +26,7 @@ businessScene.enter(async (ctx) => {
   const { steps = [], description = '' } = business;
   const prepareButtons = steps.sort((a, b) => a?.id - b?.id).map(({ button }) => button);
 
-  await ctx.replyWithHTML(description, steps.length !== 0 && (
+  await ctx.replyWithHTML(parseReceivedData(description), steps.length !== 0 && (
     Markup.keyboard(groupArrayToKeyboard([...prepareButtons, back], 2)).resize()
   ));
 
@@ -36,8 +36,7 @@ businessScene.enter(async (ctx) => {
 
   steps.forEach(({ button, message }) => {
     businessScene.hears(button, async (ctx) => {
-      const parsedMessage = message.replace(/\\n/g, '\n');
-      ctx.replyWithHTML(parsedMessage);
+      ctx.replyWithHTML(parseReceivedData(message));
     });
   });
 

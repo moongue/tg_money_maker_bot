@@ -4,7 +4,7 @@ const { CHOOSE_BUSINESS, BUSINESS } = require('./scenes');
 const { choose, chooseCorrectOption, buy, contact } = require('../messages.json');
 const { groupArrayToKeyboard } = require('../utils');
 
-const chooseOptions = ['🏆Перший🏆', '🥈Другий🥈', '🥉Третій🥉', 'Четвертий', 'П\'ятий', 'Шостий', 'Сьомий', 'Восьмий'];
+const chooseOptions = ['🏆Навушники🏆', '🥈Кросівки🥈', '🥉Ноутбуки🥉', 'Четвертий', 'П\'ятий', 'Шостий', 'Сьомий', 'Восьмий'];
 
 const prisma = new PrismaClient();
 
